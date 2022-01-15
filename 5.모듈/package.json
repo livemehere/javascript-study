@@ -1,0 +1,12 @@
+{
+  "name": "module-study",
+  "version": "1.0.0",
+  "description": "## javascript 에서 모듈이란?",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+  
+}

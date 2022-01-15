@@ -1,31 +1,73 @@
-// Promise to async & await
+//async & await
+// clear style of using promise
 
-class UserStorage {
-  login(id, pw) {
-    // 시간이 걸리는 동작 ...
-    if ((id == "kong" && pw == "1234") || (id == "ha" && pw == "1234")) {
-      return id;
-    } else {
-      throw error("없는 유저입니다");
-    }
-  }
-
-  getRole(id) {
-    //시간이 걸리는 동작 ...
-    if (id == "kong") {
-      return { name: "kong", role: "admin" };
-    } else {
-      throw error("접근권한이 없습니다");
-    }
-  }
+// 1. promise
+function fetchUser() {
+  return new Promise((resolve, reject) => {
+    resolve("knog");
+  });
 }
 
-const user = new UserStorage();
+const user = fetchUser();
+user.then(console.log);
 
-async function signIn() {
-  const id = user.login("kong", "1234");
-  const userRole = user.getRole(id);
-  console.log(id);
-  console.log(userRole);
+// 2. async
+async function fetchUser2() {
+  return "knog";
 }
-signIn();
+
+const user2 = fetchUser2();
+user2.then(console.log);
+
+//3. await
+function delay(ms) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve("done :)");
+    }, ms);
+  });
+}
+
+async function getApple() {
+  const res = await delay(1000);
+  return "🍎";
+}
+
+async function getBanana() {
+  const res = await delay(1000);
+  return "🍌";
+}
+
+function getAllFruits() {
+  return getApple().then((apple) => {
+    return getBanana().then((banana) => {
+      return `${apple}+${banana}`;
+    });
+  });
+}
+
+// 4. more await
+async function getAllFruits() {
+  const apple = await getApple();
+  const banana = await getBanana();
+  return `${apple}+${banana}`;
+}
+
+// 5. 연관성없는 promise 두개를 동시에 받는방법
+async function getAllFruits() {
+  const applePromise = getApple();
+  const bananaPromise = getBanana();
+  const apple = await applePromise;
+  const banana = await bananaPromise;
+
+  return `${apple}+${banana}`;
+}
+
+// 6. 연관성없는 promise 두개를 동시에 받는방법 (Promise APIs 사용하기)
+async function getAllFruits() {
+  return Promise.all([getApple(), getBanana()]).then((allFruits) => {
+    return allFruits.join("+");
+  });
+}
+
+getAllFruits().then((res) => console.log(res));
